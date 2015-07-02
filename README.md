@@ -5,7 +5,8 @@ LAMP container
 Quick installation
 ------------------
 
-1. `docker build --rm --no-cache=true -t lamp .`
+1. `docker build --rm -t lamp .`
+or build fro scratch: `docker build --rm --no-cache=true -t lamp .`
 2. The docker build sometimes fail due to network errors etc. Repeat
 `docker build --rm -t lamp .` until the build succeeds.
 
