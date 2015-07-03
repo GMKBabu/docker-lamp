@@ -36,15 +36,18 @@ ADD ./etc-rsyslog.conf /etc/rsyslog.conf
 # Install web server
 # -----------------
 
-#RUN yum install -y httpd php
-
-#RUN rm /var/www/html/index.html
-
 RUN yum install -y epel-release
 RUN yum install -y nginx
-RUN yum install -y php-fpm php-mysql
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN yum install -y php-fpm php-mysql php-mbstring dejavu-fonts-common dejavu-sans-fonts libmcrypt libtidy php-bcmath php-gd php-mcrypt php-php-gettext php-tcpdf php-tcpdf-dejavu-sans-fonts php-tidy t1lib
+
+# PHP 5.4 - centos7 comes with 5.5 is also supported
+#RUN wget http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+#RUN rpm -Uvh remi-release-7.rpm
+#RUN yum --enablerepo=remi install -y php54
+
+
 RUN echo -e "<?php\nphpinfo();\n " > /usr/share/nginx/html/info.php
+RUN chown apache:apache -R /usr/share/nginx/html/
 
 
 #
@@ -82,6 +85,16 @@ RUN yum install -y php-pecl-redis php-curl
 # Install phpMyAdmin
 # ------------------
 #
+
+RUN yum install -y phpMyAdmin
+RUN ln -s /usr/share/phpMyAdmin /usr/share/nginx/html/phpmyadmin
+RUN mkdir /usr/share/phpMyAdmin/config
+RUN chown apache:apache -R /usr/share/phpMyAdmin
+
+RUN mkdir -p /var/lib/php/session
+RUN chown apache:apache -R /var/lib/php
+RUN chmod ug+w /var/lib/php/session
+RUN chmod 777 /tmp
 
 ADD ./src-phpmyadmin/phpMyAdmin-4.0.8-all-languages.tar.gz /usr/share/nginx/html/
 ADD ./src-phpmyadmin/config.inc.php /usr/share/nginx/html/phpMyAdmin-4.0.8-all-languages/config.inc.php
