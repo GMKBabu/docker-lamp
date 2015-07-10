@@ -36,6 +36,9 @@ ADD ./etc-rsyslog.conf /etc/rsyslog.conf
 # Install web server
 # -----------------
 
+RUN etc-yum.repos.d-nginx.repo /etc/yum.repos.d/nginx.repo
+RUN yum update -y
+
 RUN yum install -y epel-release
 RUN yum install -y nginx
 RUN yum install -y php-fpm php-mysql php-mbstring dejavu-fonts-common dejavu-sans-fonts libmcrypt libtidy php-bcmath php-gd php-mcrypt php-php-gettext php-tcpdf php-tcpdf-dejavu-sans-fonts php-tidy t1lib
